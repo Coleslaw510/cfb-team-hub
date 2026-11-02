@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090d15">
+<title>CFB Team Hub · 2026 FBS ratings, stats &amp; schedules</title>
+<link rel="preconnect" href="https://a.espncdn.com">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#teams"><span class="logo">🏈</span><span><b>CFB Team Hub</b><small id="asof">Loading…</small></span></a>
+    <div class="search">
+      <input id="gsearch" type="search" placeholder="Search any FBS team…" autocomplete="off" spellcheck="false" aria-label="Search teams">
+      <div class="ta" id="gsearch-ta" role="listbox"></div>
+    </div>
+  </div>
+  <nav class="tabs" id="tabs">
+    <a href="#teams" data-tab="teams">Teams</a>
+    <a href="#team" data-tab="team">Team</a>
+    <a href="#compare" data-tab="compare">Compare</a>
+    <a href="#path" data-tab="path">Toughest Path</a>
+    <a href="#charts" data-tab="charts">Charts</a>
+    <a href="#glossary" data-tab="glossary">Glossary</a>
+  </nav>
+</header>
+
+<main class="wrap">
+  <!-- TEAMS TABLE -->
+  <section class="tab" id="tab-teams">
+    <div class="quick" id="quick"></div>
+    <div class="card">
+      <div class="card-head">
+        <h2>All FBS teams</h2>
+        <div class="ctrls">
+          <select id="tb-view" aria-label="Columns">
+            <option value="ratings">Ratings (FPI · SP+)</option><option value="resume">Résumé &amp; SOS</option>
+            <option value="offense">Offense</option><option value="defense">Defense</option><option value="misc">Turnovers · situational · discipline</option>
+          </select>
+          <select id="tb-conf" aria-label="Conference"></select>
+          <select id="tb-rank" aria-label="Ranked status"><option value="">All teams</option><option value="ap">AP Top 25</option><option value="unr">Unranked (AP)</option><option value="fpi25">FPI top 25</option></select>
+          <input id="tb-q" type="search" placeholder="Filter teams">
+        </div>
+      </div>
+      <p class="note" id="tb-note"></p>
+      <div class="table-wrap"><table id="tb"><thead></thead><tbody></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="tab" id="tab-team" hidden>
+    <div class="card"><div class="search big"><input id="tsearch" type="search" placeholder="Find a team (e.g. Notre Dame, Boise State)…" autocomplete="off" spellcheck="false"><div class="ta" id="tsearch-ta"></div></div></div>
+    <div id="tcard"></div>
+  </section>
+
+  <!-- COMPARE -->
+  <section class="tab" id="tab-compare" hidden>
+    <div class="card hero-card">
+      <div class="card-head"><h2>Compare teams</h2><button class="btn ghost" id="cmp-share">Copy share link</button></div>
+      <div class="cmp-pick" id="cmp-pick"></div>
+    </div>
+    <div class="grid2 cmp-grid">
+      <div class="card"><div class="card-head"><h2>Percentile profile</h2><span class="muted small">FBS percentiles</span></div><div class="chart-box radar"><canvas id="cmp-radar"></canvas></div></div>
+      <div class="card"><div class="card-head"><h2>Head to head</h2></div><div id="cmp-score"></div></div>
+    </div>
+    <div class="card"><div id="cmp-table"></div></div>
+  </section>
+
+  <!-- PATH -->
+  <section class="tab" id="tab-path" hidden>
+    <div class="card">
+      <div class="card-head">
+        <h2>Toughest path so far</h2>
+        <div class="ctrls"><select id="pt-conf" aria-label="Conference"></select><input id="pt-q" type="search" placeholder="Filter teams"></div>
+      </div>
+      <p class="note" id="pt-note"></p>
+      <div class="table-wrap"><table id="pt" class="tbl"><thead></thead><tbody></tbody></table></div>
+    </div>
+  </section>
+
+  <!-- CHARTS -->
+  <section class="tab" id="tab-charts" hidden>
+    <div class="card">
+      <div class="card-head"><h2>Offense vs defense (FPI components)</h2>
+        <div class="ctrls"><select id="sc-conf" aria-label="Conference"></select><select id="sc-sys" aria-label="System"><option value="fpi">ESPN FPI (points)</option><option value="sp">SP+</option><option value="stats">Yards/play for vs against</option></select></div></div>
+      <p class="note" id="sc-note"></p>
+      <div class="chart-box tall"><canvas id="sc-chart"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-head"><h2 id="ld-title">Leaders</h2>
+        <div class="ctrls"><select id="ld-stat" aria-label="Stat"></select><select id="ld-conf" aria-label="Conference"></select>
+          <select id="ld-n" aria-label="Top N"><option>10</option><option selected>15</option><option>25</option><option>40</option></select>
+          <label class="chk"><input type="checkbox" id="ld-rev"> Show bottom</label></div></div>
+      <p class="note" id="ld-note"></p>
+      <div class="chart-box" id="ld-box"><canvas id="ld-chart"></canvas></div>
+    </div>
+  </section>
+
+  <!-- GLOSSARY -->
+  <section class="tab" id="tab-glossary" hidden>
+    <div class="card"><div class="card-head"><h2>Ratings: FPI, SP+ and strength of schedule</h2></div><div id="gl-ratings" class="prose"></div></div>
+    <div class="card"><div class="card-head"><h2>Path difficulty (this site's calculation)</h2></div><div id="gl-path" class="prose"></div></div>
+    <div class="card"><div class="card-head"><h2>Team stats</h2></div><div id="gl-stats"></div></div>
+  </section>
+</main>
+
+<footer class="foot" id="footer"></footer>
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>

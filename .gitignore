@@ -1,0 +1,5 @@
+raw/
+.venv/
+.shots/
+__pycache__/
+*.pyc
